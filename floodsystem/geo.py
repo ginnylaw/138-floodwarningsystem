@@ -8,6 +8,7 @@ geographical data.
 
 from .utils import sorted_by_key  # noqa
 from haversine import haversine # distance between two locations given their latitude & longitude
+import plotly.express as px
 
 def stations_within_radius(stations, centre, r):
     """Returns a list of all input stations that are within r kilometres of a given centre (latitude, longitude) coordinate."""
@@ -37,3 +38,27 @@ def rivers_by_station_number(stations, N):
 
     # Returns (river name, station count) for first N entries, as well as any subsequent ones which have a station count equivalent to the Nth entry
     return [tuple(x) for x in sorted_stations_per_river[:slice_index]]
+
+# Latitude and longitude range covered by England
+ENG_LAT = (50.5,55.8)
+ENG_LON = (-6,1.1)
+
+def display_stations(stations):
+    """Plots the locations of all given stations on a map of England"""
+    # Plots all stations using their latitude and longitude
+    fig = px.scatter_geo(
+        [station.name for station in stations],
+        [station.coord[0] for station in stations],
+        [station.coord[1] for station in stations]
+    )
+    
+    # Sets the range of the map to cover just England
+    fig.update_layout(geo = dict(
+        scope = "europe",
+        resolution = 50,
+        lataxis_range = ENG_LAT,
+        lonaxis_range = ENG_LON)
+    )
+
+    # Displays plot in browser
+    fig.show()
