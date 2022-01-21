@@ -43,6 +43,18 @@ def build_station_list(use_cache=True):
         except Exception:
             typical_range = None
 
+        # Aditional interesting parameters
+
+        # Attempt to extract catchment name
+        catchment_name = None
+        if 'catchmentName' in e:
+            catchment_name = e['catchmentName']
+
+        # Attempt to extract maximum water level on record
+        max_on_record = None
+        if 'stageScale' in e and 'maxOnRecord' in e['stageScale']:
+            max_on_record = e['stageScale']['maxOnRecord']['value']
+
         try:
             # Create mesure station object if all required data is
             # available, and add to list
@@ -53,7 +65,9 @@ def build_station_list(use_cache=True):
                 _coord=(float(e['lat']), float(e['long'])),
                 _typical_range=typical_range,
                 _river=river,
-                _town=town)
+                _town=town,
+                _catchment_name=catchment_name,
+                _max_on_record=max_on_record)
             stations.append(s)
         except Exception:
             # Not all required data on the station was available, so

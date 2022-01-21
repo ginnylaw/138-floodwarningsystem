@@ -11,7 +11,7 @@ class MonitoringStation:
     """This class represents a river level monitoring station"""
 
     def __init__(self, _station_id, _measure_id, _label, _coord, _typical_range,
-                 _river, _town):
+                 _river, _town, _catchment_name, _max_on_record):
 
         self._station_id = _station_id
         self._measure_id = _measure_id
@@ -28,6 +28,10 @@ class MonitoringStation:
         self._town = _town
 
         self._latest_level = None
+
+        # Additional interesting parameters
+        self._catchment_name = _catchment_name
+        self._max_on_record = _max_on_record
 
     # Make a property for each attribute that effectively makes it read-only, preventing accidental writes
     @property
@@ -54,13 +58,21 @@ class MonitoringStation:
     @property
     def latest_level(self):
         return self._latest_level
+    @property
+    def catchment_name(self):
+        return self._catchment_name
+    @property
+    def max_on_record(self):
+        return self._max_on_record
 
     def __repr__(self):
-        d = "Station name:     {}\n".format(self._name)
-        d += "   id:            {}\n".format(self._station_id)
-        d += "   measure id:    {}\n".format(self._measure_id)
-        d += "   coordinate:    {}\n".format(self._coord)
-        d += "   town:          {}\n".format(self._town)
-        d += "   river:         {}\n".format(self._river)
-        d += "   typical range: {}".format(self._typical_range)
+        d = f"Station name:     {self._name}\n"
+        d += f"   id:             {self._station_id}\n"
+        d += f"   measure id:     {self._measure_id}\n"
+        d += f"   coordinate:     {self._coord}\n"
+        d += f"   town:           {self._town}\n"
+        d += f"   river:          {self._river}\n"
+        d += f"   typical range:  {self._typical_range}\n"
+        d += f"   catchment name: {self._catchment_name}\n"
+        d += f"   max on record:  {self.max_on_record}"
         return d
