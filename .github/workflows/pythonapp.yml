@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10.0"]
     timeout-minutes: 5
 
     steps:
@@ -26,6 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install  flake8 matplotlib pytest requests
+          pip install haversine pandas plotly
 
       # - name: Lint with flake8
       #   run: flake8 --statistics *.py
@@ -36,6 +37,9 @@ jobs:
       - name: Run Deliverable 1 code
         run: |
           python Task1A.py
+          python Task1C.py
+          python Task1E.py
+          python Task1Extensions.py
 
       - name: Run Deliverable 2 code
         run: |
