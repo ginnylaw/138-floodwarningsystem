@@ -29,3 +29,44 @@ def test_create_monitoring_station():
     assert s.town == town
     assert s.catchment_name == catchment_name
     assert s.max_on_record == max_on_record
+
+    # Checks to make sure an error is thrown whenever you try to write to an attribute of MonitoringStation
+    try: s.station_id = 5
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.measure_id = 5
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.name = "asdf"
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.coord = (20,25)
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.river = "tiny little stream thing"
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.town = "LazyTown"
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.latest_level = 0
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.catchment_name = "I catch you"
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.max_on_record = 0
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
+    try: s.station_id = -1235
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
