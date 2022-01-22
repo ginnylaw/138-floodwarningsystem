@@ -47,6 +47,10 @@ def test_create_monitoring_station():
     except AttributeError: pass
     else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
 
+    try: s.typical_range = -1235
+    except AttributeError: pass
+    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
+
     try: s.river = "tiny little stream thing"
     except AttributeError: pass
     else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
@@ -64,9 +68,5 @@ def test_create_monitoring_station():
     else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
 
     try: s.max_on_record = 0
-    except AttributeError: pass
-    else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
-
-    try: s.station_id = -1235
     except AttributeError: pass
     else: raise AttributeError("Attributes of MonitoringStation class should be read-only")
