@@ -43,17 +43,31 @@ def build_station_list(use_cache=True):
         except Exception:
             typical_range = None
 
+        # Aditional interesting parameters
+
+        # Attempt to extract catchment name
+        catchment_name = None
+        if 'catchmentName' in e:
+            catchment_name = e['catchmentName']
+
+        # Attempt to extract maximum water level on record
+        max_on_record = None
+        if 'stageScale' in e and 'maxOnRecord' in e['stageScale']:
+            max_on_record = e['stageScale']['maxOnRecord']['value']
+
         try:
             # Create mesure station object if all required data is
             # available, and add to list
             s = MonitoringStation(
-                station_id=e['@id'],
-                measure_id=e['measures'][-1]['@id'],
-                label=e['label'],
-                coord=(float(e['lat']), float(e['long'])),
-                typical_range=typical_range,
-                river=river,
-                town=town)
+                _station_id=e['@id'],
+                _measure_id=e['measures'][-1]['@id'],
+                _label=e['label'],
+                _coord=(float(e['lat']), float(e['long'])),
+                _typical_range=typical_range,
+                _river=river,
+                _town=town,
+                _catchment_name=catchment_name,
+                _max_on_record=max_on_record)
             stations.append(s)
         except Exception:
             # Not all required data on the station was available, so
@@ -81,9 +95,9 @@ def update_water_levels(stations):
     for station in stations:
 
         # Reset latestlevel
-        station.latest_level = None
+        station._latest_level = None
 
         # Atach new level data (if available)
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
-                station.latest_level = measure_id_to_value[station.measure_id]
+                station._latest_level = measure_id_to_value[station.measure_id]
