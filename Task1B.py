@@ -14,13 +14,12 @@ def run():
     """Requirements for Task 1B"""
 
     station_list = build_station_list()
-    distancelist = stations_by_distance(station_list, (52.2053, 0.1218))
-    distancelist = sorted_by_key(distancelist, 2)
+    station_list = stations_by_distance(station_list, (52.2053, 0.1218))
     
     print("10 closest stations:") 
-    print(distancelist[:10])
+    print(station_list[:10])
     print("10 furthest stations:")
-    print(distancelist[-10:])
+    print(station_list[-10:])
 
 if __name__ == "__main__":
     print("*** Task 1B: CUED Part IA Flood Warning System ***")
