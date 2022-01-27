@@ -27,6 +27,15 @@ def stations_within_radius(stations, centre, r):
     """Coordinates outside of the +=180 degree bounds wrap around. For example 190 wraps around to -170. """
     return [x for x in stations if haversine(x.coord, centre) <= r]
 
+def rivers_with_station(stations):
+    """Returns a set of names of rivers with a monotoring station"""
+    rivers = []
+    for x in stations:
+        if x.river not in rivers:
+            rivers += [x.river]
+    return sorted(rivers)
+
+
 def rivers_by_station_number(stations, N):
     """Returns a list of the N riverse with the most monitoring stations. Any rivers with the same number of statons as the Nth entry are included."""
 
