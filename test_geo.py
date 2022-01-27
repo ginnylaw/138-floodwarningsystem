@@ -3,9 +3,24 @@
 import floodsystem.geo as geo
 from floodsystem.stationdata import build_station_list
 from haversine import haversine
+import plotly
 
 station_list = build_station_list()
 assert len(station_list) > 0
+
+def test_stations_by_distance():
+    check = geo.stations_by_distance(station_list, (52.2053, 0.1218)
+    assert check[0][2] > 0
+    assert check[-1][2] < 1300
+
+    assert len(geo.stations_by_distance(station_list, (52.2053, 0.1218))) == len(station_list)
+
+    test_centres = [(52.2053, 0.1218), (51.2704, 0.5227), (55.9533, 3.1883), (51.3544, 0.3989)]
+    for centre in test_centres:
+        for station in geo.stations_by_distance(station_list, centre):
+            assert geo.stations_by_distance(station_list, centre)[2] = haversine(station.coord, centre) <= radius
+
+    
 
 def test_stations_within_radius():
     assert len(geo.stations_within_radius(station_list, (52.2053, 0.1218), -1)) == 0
