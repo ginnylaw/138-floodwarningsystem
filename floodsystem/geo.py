@@ -11,6 +11,7 @@ import floodsystem.geo as geo
 from floodsystem.stationdata import build_station_list
 from haversine import haversine
 import plotly.express as px
+import bisect
 
 def stations_by_distance(stations, p):
     """sort stations by distance"""
@@ -34,6 +35,17 @@ def rivers_with_station(stations):
         if x.river not in rivers:
             rivers += [x.river]
     return sorted(rivers)
+
+
+def stations_by_river(stations):
+    river_dict = {}
+    for x in stations:
+        if x.river not in river_dict:
+            river_dict[x.river] = list()
+        river_dict[x.river].extend([x.name])
+    return river_dict
+
+
 
 
 def rivers_by_station_number(stations, N):
