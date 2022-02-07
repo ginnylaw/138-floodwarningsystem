@@ -46,8 +46,6 @@ def stations_by_river(stations):
     return river_dict
 
 
-
-
 def rivers_by_station_number(stations, N):
     """Returns a list of the N riverse with the most monitoring stations. Any rivers with the same number of statons as the Nth entry are included."""
 
@@ -95,3 +93,4 @@ def display_stations(stations):
 
     # Displays plot in browser
     fig.show()
+
