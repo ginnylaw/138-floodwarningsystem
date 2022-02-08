@@ -7,7 +7,7 @@ def run():
 
     station_list = build_station_list()
     inconsisent = inconsistent_typical_range_stations(station_list)
-    print(inconsisent)
+    print(sorted(inconsisent))
     
 
 if __name__ == "__main__":

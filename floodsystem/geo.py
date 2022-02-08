@@ -18,9 +18,8 @@ def stations_by_distance(stations, p):
     dist_lst = []
     for x in stations:
         distance = haversine(x.coord, p)
-        dist_lst += (x.name, x.town, distance)
-    dist_tuple = [x for x in zip(*[iter(dist_lst)]*3)]
-    dist_tuple = sorted_by_key(dist_tuple, 2)
+        dist_lst.append((x, distance))
+    dist_tuple = sorted(dist_lst, key = lambda x : x[1])
     return dist_tuple
 
 def stations_within_radius(stations, centre, r):
@@ -38,6 +37,7 @@ def rivers_with_station(stations):
 
 
 def stations_by_river(stations):
+    """Returns all stations on a given river."""
     river_dict = {}
     for x in stations:
         if x.river not in river_dict:
