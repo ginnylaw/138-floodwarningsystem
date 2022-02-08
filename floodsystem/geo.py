@@ -5,15 +5,46 @@
 geographical data.
 
 """
-
+import dateutil
 from .utils import sorted_by_key  # noqa
-from haversine import haversine # distance between two locations given their latitude & longitude
+import floodsystem.geo as geo
+from floodsystem.stationdata import build_station_list
+from haversine import haversine
 import plotly.express as px
+import bisect
+
+def stations_by_distance(stations, p):
+    """sort stations by distance"""
+    dist_lst = []
+    for x in stations:
+        distance = haversine(x.coord, p)
+        dist_lst.append((x, distance))
+    dist_tuple = sorted(dist_lst, key = lambda x : x[1])
+    return dist_tuple
 
 def stations_within_radius(stations, centre, r):
     """Returns a list of all input stations that are within r kilometres of a given centre (latitude, longitude) coordinate."""
     """Coordinates outside of the +=180 degree bounds wrap around. For example 190 wraps around to -170. """
     return [x for x in stations if haversine(x.coord, centre) <= r]
+
+def rivers_with_station(stations):
+    """Returns a set of names of rivers with a monotoring station"""
+    rivers = []
+    for x in stations:
+        if x.river not in rivers:
+            rivers += [x.river]
+    return sorted(rivers)
+
+
+def stations_by_river(stations):
+    """Returns all stations on a given river."""
+    river_dict = {}
+    for x in stations:
+        if x.river not in river_dict:
+            river_dict[x.river] = list()
+        river_dict[x.river].extend([x.name])
+    return river_dict
+
 
 def rivers_by_station_number(stations, N):
     """Returns a list of the N riverse with the most monitoring stations. Any rivers with the same number of statons as the Nth entry are included."""
@@ -62,3 +93,4 @@ def display_stations(stations):
 
     # Displays plot in browser
     fig.show()
+
