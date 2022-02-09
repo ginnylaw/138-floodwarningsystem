@@ -87,3 +87,22 @@ class MonitoringStation:
         d += f"   catchment name: {self._catchment_name}\n"
         d += f"   max on record:  {self.max_on_record}"
         return d
+
+    def typical_range_consistent(self):
+        """Check whether typical range of station is valid. Returns True or False"""
+        if self._measure_id == None:
+            return False
+        if self._typical_range == None:
+            return False
+        if self._typical_range[1] <= self._typical_range[0]:
+                return False
+        return True
+
+def inconsistent_typical_range_stations(stations):
+    """Return list of stations with inconsistent data."""
+    inconsistent_stations = []
+    for x in stations:
+        if not x.typical_range_consistent():
+            inconsistent_stations.append(x.name)
+    return inconsistent_stations
+    
