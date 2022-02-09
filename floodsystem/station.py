@@ -7,6 +7,9 @@ for manipulating/modifying station data
 """
 
 
+from urllib.parse import parse_qsl
+
+
 class MonitoringStation:
     """This class represents a river level monitoring station"""
 
@@ -32,6 +35,14 @@ class MonitoringStation:
         # Additional interesting parameters
         self._catchment_name = _catchment_name
         self._max_on_record = _max_on_record
+
+    def relative_water_level(self):
+        """Returns latest water level as a fraction of the typical range"""
+
+        if self.latest_level and self.typical_range_consistent() and self.latest_level >= self.typical_range[0]:
+            return (self.latest_level - self.typical_range[0]) / (self.typical_range[1] - self.typical_range[0])
+        else:
+            return None
 
     # Make a property for each attribute that effectively makes it read-only, preventing accidental writes
     @property
