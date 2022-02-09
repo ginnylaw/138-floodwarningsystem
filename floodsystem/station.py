@@ -78,6 +78,7 @@ class MonitoringStation:
         return d
 
     def typical_range_consistent(self):
+        """Check whether typical range of station is valid. Returns True or False"""
         if self._measure_id == None:
             return False
         if self._typical_range == None:
@@ -87,6 +88,7 @@ class MonitoringStation:
         return True
 
 def inconsistent_typical_range_stations(stations):
+    """Return list of stations with inconsistent data."""
     inconsistent_stations = []
     for x in stations:
         if not x.typical_range_consistent():
