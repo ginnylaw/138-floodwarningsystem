@@ -47,4 +47,6 @@ jobs:
       - name: Run Deliverable 2 code
         run: |
           python Task2A.py
+          python Task2B.py
           python Task2D.py
+          python Task2F.py
