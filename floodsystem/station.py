@@ -8,7 +8,7 @@ for manipulating/modifying station data
 
 
 from urllib.parse import parse_qsl
-
+import datetime
 
 class MonitoringStation:
     """This class represents a river level monitoring station"""
@@ -31,6 +31,7 @@ class MonitoringStation:
         self._town = _town
 
         self._latest_level = None
+        self._latest_date = None
 
         # Additional interesting parameters
         self._catchment_name = _catchment_name
@@ -39,7 +40,7 @@ class MonitoringStation:
     def relative_water_level(self):
         """Returns latest water level as a fraction of the typical range"""
 
-        if self.latest_level and self.typical_range_consistent() and self.latest_level >= self.typical_range[0]:
+        if self.levels_consistent():
             return (self.latest_level - self.typical_range[0]) / (self.typical_range[1] - self.typical_range[0])
         else:
             return None
@@ -75,6 +76,9 @@ class MonitoringStation:
     @property
     def max_on_record(self):
         return self._max_on_record
+    @property
+    def latest_date(self):
+        return self._latest_date
 
     def __repr__(self):
         d = f"Station name:     {self._name}\n"
@@ -85,7 +89,9 @@ class MonitoringStation:
         d += f"   river:          {self._river}\n"
         d += f"   typical range:  {self._typical_range}\n"
         d += f"   catchment name: {self._catchment_name}\n"
-        d += f"   max on record:  {self.max_on_record}"
+        d += f"   max on record:  {self.max_on_record}\n"
+        d += f"   latest level:   {self._latest_level}\n"
+        d += f"   latest date:    {self._latest_date}\n\n"
         return d
 
     def typical_range_consistent(self):
@@ -95,8 +101,16 @@ class MonitoringStation:
         if self._typical_range == None:
             return False
         if self._typical_range[1] <= self._typical_range[0]:
-                return False
+            return False
+        
         return True
+
+    def levels_consistent(self):
+        """Check whether station data is usable for flood risk analysis."""
+        if self.typical_range_consistent() and self._latest_date == str(datetime.date.today()) and self.latest_level != None:
+            return True
+        else:
+            return False
 
 def inconsistent_typical_range_stations(stations):
     """Return list of stations with inconsistent data."""

@@ -9,7 +9,6 @@ JSON objects fetched from the Internet and
 from . import datafetcher
 from .station import MonitoringStation
 
-
 def build_station_list(use_cache=True):
     """Build and return a list of all river level monitoring stations
     based on data fetched from the Environment agency. Each station is
@@ -85,19 +84,23 @@ def update_water_levels(stations):
 
     # Build map from measure id to latest reading (value)
     measure_id_to_value = dict()
+    measure_id_to_date = dict()
     for measure in measure_data['items']:
         if 'latestReading' in measure:
             latest_reading = measure['latestReading']
             measure_id = latest_reading['measure']
             measure_id_to_value[measure_id] = latest_reading['value']
+            measure_id_to_date[measure_id] = latest_reading['date']
 
     # Attach latest reading to station objects
     for station in stations:
 
         # Reset latestlevel
         station._latest_level = None
+        station._latest_date = None
 
         # Atach new level data (if available)
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
                 station._latest_level = measure_id_to_value[station.measure_id]
+                station._latest_date = measure_id_to_date[station.measure_id]

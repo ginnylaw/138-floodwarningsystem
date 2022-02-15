@@ -19,9 +19,6 @@ def run():
         riverstosort = riverlist[x]
         riverstosort = sorted(riverstosort)
         print("Stations on the ", x, ": ", riverstosort)
-    
-
-
 
 if __name__ == "__main__":
     print("*** Task 1D: CUED Part IA Flood Warning System ***")
