@@ -9,6 +9,7 @@ latest time history level data
 import datetime
 import json
 import os
+import warnings
 
 import dateutil.parser
 import requests
@@ -129,12 +130,23 @@ def fetch_measure_levels(measure_id, dt):
 
     # Extract dates and levels
     dates, levels = [], []
+    no_value_count = 0
     for measure in data['items']:
-        # Convert date-time string to a datetime object
-        d = dateutil.parser.parse(measure['dateTime'])
 
-        # Append data
-        dates.append(d)
-        levels.append(measure['value'])
+        # Added try-except to catch cases where no value is present
+        try:
+            levels.append(measure['value'])
+
+            # Convert date-time string to a datetime object
+            d = dateutil.parser.parse(measure['dateTime'])
+
+            # Append data
+            dates.append(d)
+
+        except KeyError:
+            no_value_count += 1
+
+    if no_value_count > 0:
+        warnings.warn(f"datafetcher.fetch_measure_levels: Omitted {no_value_count} dates with no value reading")
 
     return dates, levels
