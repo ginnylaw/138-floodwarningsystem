@@ -1,6 +1,6 @@
 """Unit test for the flood module"""
 
-from floodsystem.flood import stations_level_over_threshold
+from floodsystem.flood import stations_level_over_threshold, stations_highest_rel_level
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.station import MonitoringStation
 import datetime
@@ -44,3 +44,14 @@ def test_stations_level_over_threshold():
 
     s._typical_range = (3,1)
     assert len(stations_level_over_threshold([s], -1000)) == 0
+
+def test_stations_highest_rel_level():
+    station_list = build_station_list()
+    update_water_levels(station_list)
+
+    top10 = stations_highest_rel_level(station_list, 10)
+    n = 0
+    while n < 9:
+        assert top10[n][1] > top10[n+1][1]
+        n += 1
+    
