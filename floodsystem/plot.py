@@ -15,6 +15,9 @@ def plot_water_level_with_fit(station, dates, levels, p, show_plot=True):
     plt.xlabel("Days from current day")
     plt.ylabel("Water level (m)")
 
+    plt.hlines(1, dates[0], dates[-1], color="palegreen", linestyles='solid', label='Typical high')
+    plt.hlines(0, dates[0], dates[-1], color="tomato", linestyles='solid', label='Typical low')
+
     plt.legend()
 
     if show_plot:
